@@ -1,5 +1,3 @@
-# This file is part of validatorcrawler <http://github.com/jdufresne/validatorcrawler>.
-#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -17,19 +15,16 @@
 import urllib2
 import urlparse
 from validatorcrawler.validators.htmlvalidator import HTMLValidator
-
 import logging
-
 
 class Crawler(object):
     def __init__(self, start, timeout):
-        f = urllib2.urlopen(start)
-        self.start = f.url
+        result = urllib2.urlopen(start)
+        self.start = result.url
         self.domain = urlparse.urlparse(f.url).netloc
         self.timeout = timeout
         self.validators = {}
         self.add_validator(HTMLValidator)
-
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def add_validator(self, validator):
@@ -47,26 +42,26 @@ class Crawler(object):
 
     def visit(self, url):
         try:
-            f = urllib2.urlopen(url, timeout=self.timeout)
-        except urllib2.HTTPError as e:
+            result = urllib2.urlopen(url, timeout=self.timeout)
+        except urllib2.HTTPError as error:
             self.logger.error("%(method)s %(url)s %(status)s %(message)s", {
                 'method': 'GET',
-                'url': e.url,
-                'status': e.code,
-                'message': e.msg,
+                'url': error.url,
+                'status': error.code,
+                'message': error.msg,
             })
-        except urllib2.URLError as e:
+        except urllib2.URLError as error:
             self.logger.error("%(method)s %(url)s %(error)s", {
                 'method': 'GET',
                 'url': url,
-                'error': e.reason,
+                'error': error.reason,
             })
         else:
             self.logger.info("%(method)s %(url)s %(status)s %(message)s", {
                 'method': 'GET',
-                'url': f.url,
-                'status': f.code,
-                'message': f.msg,
+                'url': result.url,
+                'status': result.code,
+                'message': result.msg,
             })
             if urlparse.urlparse(f.url).netloc == self.domain:
                 mimetype = f.info().gettype()

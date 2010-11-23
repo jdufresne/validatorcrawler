@@ -1,5 +1,3 @@
-# This file is part of validatorcrawler <http://github.com/jdufresne/validatorcrawler>.
-#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -18,15 +16,15 @@ import argparse
 import logging
 from validatorcrawler.crawler import Crawler
 
-def main():
-    VERBOSITY = {
-        'debug': logging.DEBUG,
-        'info': logging.INFO,
-        'warning': logging.WARNING,
-        'error': logging.ERROR,
-        'critical': logging.CRITICAL
-    }
+VERBOSITY = {
+    'debug': logging.DEBUG,
+    'info': logging.INFO,
+    'warning': logging.WARNING,
+    'error': logging.ERROR,
+    'critical': logging.CRITICAL,
+}
 
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--timeout', '-t', type=int, default=5)
     parser.add_argument(
@@ -39,4 +37,4 @@ def main():
 
     logging.basicConfig(level=VERBOSITY[args.verbosity])
     for url in args.urls:
-        crawler = Crawler(url, args.timeout).crawl()
+        Crawler(url, args.timeout).crawl()

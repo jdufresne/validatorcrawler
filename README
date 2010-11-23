@@ -1,0 +1,13 @@
+==================
+ validatorcrawler
+==================
+
+External dependencies
+---------------------
+ * BeautifulSoup
+ * argparse
+ * logging
+ * re
+ * tidy
+ * urllib2
+ * urlparse
