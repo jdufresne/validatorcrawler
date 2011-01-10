@@ -21,7 +21,7 @@ class Crawler(object):
     def __init__(self, start, timeout):
         result = urllib2.urlopen(start)
         self.start = result.url
-        self.domain = urlparse.urlparse(f.url).netloc
+        self.domain = urlparse.urlparse(result.url).netloc
         self.timeout = timeout
         self.validators = {}
         self.add_validator(HTMLValidator)
@@ -63,10 +63,10 @@ class Crawler(object):
                 'status': result.code,
                 'message': result.msg,
             })
-            if urlparse.urlparse(f.url).netloc == self.domain:
-                mimetype = f.info().gettype()
+            if urlparse.urlparse(result.url).netloc == self.domain:
+                mimetype = result.info().gettype()
                 try:
-                    validator = self.validators[mimetype](f.read())
+                    validator = self.validators[mimetype](result.read())
                 except KeyError:
                     pass
                 else:
